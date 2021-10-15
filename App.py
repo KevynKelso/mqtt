@@ -18,6 +18,7 @@ PASSWORD = os.getenv('PASSWORD')
 HOST = os.getenv('HOST')
 PORT = int(os.getenv('PORT'))
 
+
 def on_connect(client, userdata, flags, rc):
     client.subscribe(topic)
     client.publish(topic2, "STARTING SERVER")
@@ -34,15 +35,15 @@ def index():
     return render_template('index.html', data=data, title=data['title'])
 
 def main():
-    client = mqtt.Client()
-    client.tls_set(tls_version=mqtt.ssl.PROTOCOL_TLS)
-    client.username_pw_set(USERNAME, PASSWORD)
-    client.on_connect = on_connect
-    client.on_message = on_message
-    client.connect(HOST, PORT)
-    client.loop_start()
-
     app.run(host='0.0.0.0', port=port)
+
+client = mqtt.Client()
+client.tls_set(tls_version=mqtt.ssl.PROTOCOL_TLS)
+client.username_pw_set(USERNAME, PASSWORD)
+client.on_connect = on_connect
+client.on_message = on_message
+client.connect(HOST, PORT)
+client.loop_start()
 
 if __name__ == '__main__':
     main()
